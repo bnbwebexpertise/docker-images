@@ -1,7 +1,7 @@
 # ------------------------------------------------------------------------------
-# Docker provisioning script for the trusty-laravel-minimal web server stack
+# Docker provisioning script for the Laravel web server stack
 #
-# 	e.g. docker build -t bnbwebexpertise/trusty-laravel-minimal .
+# 	e.g. docker build -t bnbwebexpertise/laravel-php-fpm .
 # ------------------------------------------------------------------------------
 
 # ------------------------------------------------------------------------------
