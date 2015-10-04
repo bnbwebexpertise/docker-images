@@ -52,9 +52,6 @@ RUN apt-get update && \
         libcurl3 \
         libcurl3-dev \
         python \
-        git \
-        nodejs-legacy \
-        npm \
         sqlite3 \
         libsqlite3-dev \
         php5-cli \

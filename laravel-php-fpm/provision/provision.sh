@@ -42,22 +42,6 @@ sed -i "s/listen = \/var.*/listen = 0.0.0.0:9000/" /etc/php5/fpm/pool.d/www.conf
 service php5-fpm restart
 
 # ------------------------------------------------------------------------------
-# Node and npm
-# ------------------------------------------------------------------------------
-
-npm install -g grunt-cli
-npm install -g gulp
-npm install -g bower
-
-# ------------------------------------------------------------------------------
-# Composer PHP dependency manager
-# ------------------------------------------------------------------------------
-
-# install the latest version of composer
-php -r "readfile('https://getcomposer.org/installer');" | php
-mv composer.phar /usr/local/bin/composer
-
-# ------------------------------------------------------------------------------
 # Clean up
 # ------------------------------------------------------------------------------
 rm -rf /provision
