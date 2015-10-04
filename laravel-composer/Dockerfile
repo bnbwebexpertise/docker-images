@@ -29,7 +29,7 @@ RUN echo "Indian/Reunion" > /etc/timezone && \
 
 RUN locale-gen fr_FR.UTF-8
 ENV LANG fr_FR.UTF-8
-ENV LANGUAGE fr_FR:en
+ENV LANGUAGE fr_FR:fr
 ENV LC_ALL fr_FR.UTF-8
 
 # ------------------------------------------------------------------------------
@@ -74,6 +74,10 @@ RUN apt-get update && \
 RUN mkdir /provision
 ADD provision /provision
 RUN /provision/provision.sh
+
+# ------------------------------------------------------------------------------
+# Expose ports
+# ------------------------------------------------------------------------------
 
 RUN usermod -u 1000 www-data
 
