@@ -34,15 +34,7 @@ source $OSM_MIRROR_CONF
 
 #.......................................................................
 
-mkdir /provision/osm-mirror && \
-    cd /provision/osm-mirror
-
-echo_step "Downloading installer source..."
-git clone --recursive --depth=50 --branch=master https://github.com/makinacorpus/osm-mirror.git /tmp/osm-mirror
-rm -f /tmp/osm-mirror/install.sh
-shopt -s dotglob nullglob
-cp -R /tmp/osm-mirror/* .
-
+cd /provision/osm-mirror
 
 #.......................................................................
 
@@ -65,7 +57,7 @@ _EOF_
 
 #.......................................................................
 
-OSM_DATA=/usr/share/mapnik-osm-data/world_boundaries
+OSM_DATA=/usr/share/mapnik-osm-carto-data/world_boundaries
 
 if [ ! -f $OSM_DATA/10m-land.shp ]; then
     echo_step "Load world boundaries data..."
