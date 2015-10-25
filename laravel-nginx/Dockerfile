@@ -10,6 +10,8 @@
 
 FROM ubuntu-debootstrap:14.04
 
+MAINTAINER Jérémy Gaulin <contact@gabsource.com>
+
 CMD ["nginx"]
 
 # ------------------------------------------------------------------------------
