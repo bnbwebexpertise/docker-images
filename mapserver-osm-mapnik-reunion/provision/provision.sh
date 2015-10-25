@@ -34,15 +34,7 @@ source $OSM_MIRROR_CONF
 
 #.......................................................................
 
-mkdir /provision/osm-mirror && \
-    cd /provision/osm-mirror
-
-echo_step "Downloading installer source..."
-git clone --recursive --depth=50 --branch=master https://github.com/makinacorpus/osm-mirror.git /tmp/osm-mirror
-rm -f /tmp/osm-mirror/install.sh
-shopt -s dotglob nullglob
-cp -R /tmp/osm-mirror/* .
-
+cd /provision/osm-mirror
 
 #.......................................................................
 
@@ -54,7 +46,7 @@ sudo -n -u postgres -s -- psql -c "CREATE USER ${DB_USER} WITH PASSWORD '${DB_PA
 sudo -n -u postgres -s -- psql -c "CREATE DATABASE ${DB_NAME} OWNER ${DB_USER} ENCODING 'UTF8' TEMPLATE template0;"
 sudo -n -u postgres -s -- psql -d ${DB_NAME} -c "CREATE EXTENSION postgis;"
 sudo -n -u postgres -s -- psql -d ${DB_NAME} -c "GRANT ALL ON spatial_ref_sys, geometry_columns, raster_columns TO ${DB_USER};"
-sudo -n -u postgres -s -- psql -d ${DB_NAME} -f /usr/share/postgresql/9.3/contrib/postgis-2.0/legacy.sql
+sudo -n -u postgres -s -- psql -d ${DB_NAME} -f /usr/share/postgresql/9.3/contrib/postgis-2.1/legacy.sql
 
 cat << _EOF_ >> /etc/postgresql/9.3/main/pg_hba.conf
 # Automatically added by OSM installation :
@@ -65,33 +57,22 @@ _EOF_
 
 #.......................................................................
 
-OSM_DATA=/usr/share/mapnik-osm-data/world_boundaries
+OSM_DATA=/usr/share/mapnik-osm-carto-data/world_boundaries
 
 if [ ! -f $OSM_DATA/10m-land.shp ]; then
     echo_step "Load world boundaries data..."
-
-    # Copy ne_10m_populated_places to ne_10m_populated_places_fixed
-    rm -rf $OSM_DATA/ne_10m_populated_places_fixed.*
-    ogr2ogr $OSM_DATA/ne_10m_populated_places_fixed.shp $OSM_DATA/ne_10m_populated_places.shp
-
-    zipfile=/tmp/simplified-land-polygons-complete-3857.zip
-    curl -L -o "${zipfile}" "http://data.openstreetmapdata.com/simplified-land-polygons-complete-3857.zip"
-    unzip -qqu ${zipfile} simplified-land-polygons-complete-3857/simplified_land_polygons.{shp,shx,prj,dbf,cpg} -d /tmp
-    rm ${zipfile}
-    mv /tmp/simplified-land-polygons-complete-3857/simplified_land_polygons.* $OSM_DATA/
-
-
-    zipfile=/tmp/land-polygons-split-3857.zip
-    curl -L -o "${zipfile}" "http://data.openstreetmapdata.com/land-polygons-split-3857.zip"
-    unzip -qqu ${zipfile} -d /tmp
-    rm ${zipfile}
-    mv /tmp/land-polygons-split-3857/land_polygons.* $OSM_DATA/
 
     zipfile=/tmp/coastline-good.zip
     curl -L -o "${zipfile}" "http://tilemill-data.s3.amazonaws.com/osm/coastline-good.zip"
     unzip -qqu ${zipfile} -d /tmp
     rm ${zipfile}
     mv /tmp/coastline-good.* $OSM_DATA/
+
+    zipfile=/tmp/shoreline_300.zip
+    curl -L -o "${zipfile}" "http://tilemill-data.s3.amazonaws.com/osm/shoreline_300.zip"
+    unzip -qqu ${zipfile} -d /tmp
+    rm ${zipfile}
+    mv /tmp/shoreline_300.* $OSM_DATA/
 
     zipfile=/tmp/10m-land.zip
     curl -L -o "${zipfile}" "http://mapbox-geodata.s3.amazonaws.com/natural-earth-1.3.0/physical/10m-land.zip"
@@ -100,12 +81,9 @@ if [ ! -f $OSM_DATA/10m-land.shp ]; then
     mv /tmp/10m-land.* $OSM_DATA/
 
     shapeindex --shape_files \
-    $OSM_DATA/simplified_land_polygons.shp \
-    $OSM_DATA/land_polygons.shp \
     $OSM_DATA/coastline-good.shp \
     $OSM_DATA/10m-land.shp \
-    $OSM_DATA/shoreline_300.shp \
-    $OSM_DATA/ne_10m_populated_places_fixed.shp
+    $OSM_DATA/shoreline_300.shp
 fi
 
 
@@ -161,7 +139,7 @@ socketname=/var/run/renderd/renderd.sock
 num_threads=2
 
 [mapnik]
-plugins_dir=/usr/lib/mapnik/2.0/input
+plugins_dir=/usr/lib/mapnik/2.2/input
 font_dir=/usr/share/fonts/truetype/ttf-dejavu
 font_dir_recurse=false
 

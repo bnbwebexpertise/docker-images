@@ -49,6 +49,24 @@ die "Y range $y0 .. $y1 out of range 0 .. $refmax."
     unless $y0 <= $refmax;
 
 die "Zoom range out of range 0..19."
+    unless $z0 <= 19;
+
+if( $x1 > $refmax ) {
+    print "Warning: x1 = $x1 out of range 0 .. $refmax.  Reduced to $refmax.\n";
+    $x1= $refmax;
+}
+
+if( $y1 > $refmax ) {
+    print "Warning: y1 = $y1 out of range 0 .. $refmax.  Reduced to $refmax.\n";
+    $y1= $refmax;
+}
+
+if( $z1 > 19 ) {
+    print "Warning: z1 = $z1 out of range 0 .. 19.  Reduced to 19.\n";
+    $z1= 19;
+}
+
+for my $z ($z0..$z1) {
     my ($x, $X, $y, $Y);
     if( $z > $zref ) {
         my $mul= 1 << ($z - $zref);
@@ -69,5 +87,3 @@ die "Zoom range out of range 0..19."
     }
     system "render_list", "-z", $z, "-Z", $z, "-a", "-x", $x, "-X", $X, "-y", $y, "-Y", $Y, @rlargs;
 }
-
-
