@@ -32,10 +32,9 @@ ADD provision /provision
 
 RUN apt-get update && \
     apt-get install -y \
+        git \
         software-properties-common \
         python-software-properties && \
-    apt-add-repository -y ppa:git-core/ppa && \
-    apt-add-repository -y ppa:ubuntugis/ppa && \
     add-apt-repository -y ppa:kakrueger/openstreetmap && \
     apt-get update && \
     apt-get dist-upgrade -y && \
@@ -51,8 +50,9 @@ RUN apt-get update && \
         mapnik-utils \
         unzip \
         libapache2-mod-tile \
-        postgresql-9.3-postgis-2.1 && \
-    /provision/provision.sh \
+        postgresql-9.3-postgis-2.1
+
+RUN /provision/provision.sh \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 

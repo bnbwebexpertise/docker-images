@@ -54,7 +54,7 @@ sudo -n -u postgres -s -- psql -c "CREATE USER ${DB_USER} WITH PASSWORD '${DB_PA
 sudo -n -u postgres -s -- psql -c "CREATE DATABASE ${DB_NAME} OWNER ${DB_USER} ENCODING 'UTF8' TEMPLATE template0;"
 sudo -n -u postgres -s -- psql -d ${DB_NAME} -c "CREATE EXTENSION postgis;"
 sudo -n -u postgres -s -- psql -d ${DB_NAME} -c "GRANT ALL ON spatial_ref_sys, geometry_columns, raster_columns TO ${DB_USER};"
-sudo -n -u postgres -s -- psql -d ${DB_NAME} -f /usr/share/postgresql/9.3/contrib/postgis-2.0/legacy.sql
+sudo -n -u postgres -s -- psql -d ${DB_NAME} -f /usr/share/postgresql/9.3/contrib/postgis-2.1/legacy.sql
 
 cat << _EOF_ >> /etc/postgresql/9.3/main/pg_hba.conf
 # Automatically added by OSM installation :
