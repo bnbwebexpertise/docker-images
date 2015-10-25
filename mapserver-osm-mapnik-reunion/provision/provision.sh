@@ -72,7 +72,7 @@ if [ ! -f $OSM_DATA/10m-land.shp ]; then
 
     # Copy ne_10m_populated_places to ne_10m_populated_places_fixed
     rm -rf $OSM_DATA/ne_10m_populated_places_fixed.*
-    ogr2ogr $OSM_DATA/ne_10m_populated_places_fixed.shp $OSM_DATA/ne_10m_populated_places.shp
+    ogr2ogr $OSM_DATA/ne_10m_populated_places_fixed.shp /usr/share/mapnik-osm-carto-data/ne_10m_populated_places/ne_10m_populated_places.shp
 
     zipfile=/tmp/simplified-land-polygons-complete-3857.zip
     curl -L -o "${zipfile}" "http://data.openstreetmapdata.com/simplified-land-polygons-complete-3857.zip"
