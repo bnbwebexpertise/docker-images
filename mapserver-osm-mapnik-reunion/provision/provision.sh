@@ -75,24 +75,28 @@ if [ ! -f $OSM_DATA/10m-land.shp ]; then
     ogr2ogr $OSM_DATA/ne_10m_populated_places_fixed.shp $OSM_DATA/ne_10m_populated_places.shp
 
     zipfile=/tmp/simplified-land-polygons-complete-3857.zip
-    unzip -qqu $zipfile simplified-land-polygons-complete-3857/simplified_land_polygons.{shp,shx,prj,dbf,cpg} -d /tmp
-    rm $zipfile
+    curl -L -o "${zipfile}" "http://data.openstreetmapdata.com/simplified-land-polygons-complete-3857.zip"
+    unzip -qqu ${zipfile} simplified-land-polygons-complete-3857/simplified_land_polygons.{shp,shx,prj,dbf,cpg} -d /tmp
+    rm ${zipfile}
     mv /tmp/simplified-land-polygons-complete-3857/simplified_land_polygons.* $OSM_DATA/
 
 
     zipfile=/tmp/land-polygons-split-3857.zip
-    unzip -qqu $zipfile -d /tmp
-    rm $zipfile
+    curl -L -o "${zipfile}" "http://data.openstreetmapdata.com/land-polygons-split-3857.zip"
+    unzip -qqu ${zipfile} -d /tmp
+    rm ${zipfile}
     mv /tmp/land-polygons-split-3857/land_polygons.* $OSM_DATA/
 
     zipfile=/tmp/coastline-good.zip
-    unzip -qqu $zipfile -d /tmp
-    rm $zipfile
+    curl -L -o "${zipfile}" "http://tilemill-data.s3.amazonaws.com/osm/coastline-good.zip"
+    unzip -qqu ${zipfile} -d /tmp
+    rm ${zipfile}
     mv /tmp/coastline-good.* $OSM_DATA/
 
     zipfile=/tmp/10m-land.zip
-    unzip -qqu $zipfile -d /tmp
-    rm $zipfile
+    curl -L -o "${zipfile}" "http://mapbox-geodata.s3.amazonaws.com/natural-earth-1.3.0/physical/10m-land.zip"
+    unzip -qqu ${zipfile} -d /tmp
+    rm ${zipfile}
     mv /tmp/10m-land.* $OSM_DATA/
 
     shapeindex --shape_files \
@@ -118,6 +122,7 @@ cp -R preview/* /var/www/
 echo_step "Load into database..."
 
 output=/tmp/data.osm
+curl -L -o "${output}" "http://www.overpass-api.de/api/xapi?map?bbox=${OSM_EXTENT}"
 
 sudo -n -u postgres -s -- osm2pgsql -d ${DB_NAME} --extra-attributes --create ${output}
 if [ $? -eq 0 ]; then

@@ -27,9 +27,11 @@ ENV LC_ALL fr_FR.UTF-8
 
 RUN usermod -u 1000 www-data
 
+RUN mkdir /provision
+ADD provision /provision
+
 RUN apt-get update && \
-    apt-get install -y \
-        python-software-properties && \
+    apt-get install -y python-software-properties && \
     apt-add-repository -y ppa:git-core/ppa && \
     apt-add-repository -y ppa:ubuntugis/ppa && \
     add-apt-repository -y ppa:kakrueger/openstreetmap && \
@@ -48,16 +50,9 @@ RUN apt-get update && \
         unzip \
         libapache2-mod-tile \
         postgresql-9.3-postgis-2.1 \
-
-RUN curl -L -o "/tmp/simplified-land-polygons-complete-3857.zip" "http://data.openstreetmapdata.com/simplified-land-polygons-complete-3857.zip" && \
-    curl -L -o "/tmp/land-polygons-split-3857.zip" "http://data.openstreetmapdata.com/land-polygons-split-3857.zip" && \
-    curl -L -o "/tmp/coastline-good.zip" "http://tilemill-data.s3.amazonaws.com/osm/coastline-good.zip" && \
-    curl -L -o "/tmp/10m-land.zip" "http://mapbox-geodata.s3.amazonaws.com/natural-earth-1.3.0/physical/10m-land.zip" && \
-    curl -L -o "/tmp/data.osm" "http://www.overpass-api.de/api/xapi?map?bbox=${OSM_EXTENT}"
-
-RUN mkdir /provision
-ADD provision /provision
-RUN /provision/provision.sh
+    /provision/provision.sh \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # ------------------------------------------------------------------------------
 # Expose ports
