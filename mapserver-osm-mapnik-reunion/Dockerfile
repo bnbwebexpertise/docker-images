@@ -83,9 +83,3 @@ ENV MODTILE_CACHE_DURATION_LOW_ZOOM 9 518400
 ENV MODTILE_CACHE_LAST_MODIFIED_FACTOR 0.20
 
 CMD ["/bin/bash", "/provision/start.sh"]
-
-# ------------------------------------------------------------------------------
-# Clean up
-# ------------------------------------------------------------------------------
-
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
