@@ -1,6 +1,8 @@
 #!/bin/bash
 
 service postgresql start
-service renderd start
+/usr/bin/renderd -f -c /etc/renderd.conf &
+
+sleep 5
 
 /usr/sbin/apache2 -D FOREGROUND
