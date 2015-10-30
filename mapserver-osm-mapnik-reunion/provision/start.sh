@@ -1,5 +1,7 @@
 #!/bin/bash
 
+rm -f ${ENV APACHE_PID_FILE}
+
 service postgresql start
 service renderd start
 
