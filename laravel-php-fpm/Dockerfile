@@ -17,7 +17,7 @@ ENV HOME /root
 ENV DEBIAN_FRONTEND noninteractive
 
 # Use Supervisor to run and manage all other services
-CMD ["/usr/local/bin/supervisord", "-c", "/etc/supervisord.conf"]
+CMD ["/bin/bash", "/start.sh"]
 
 # ------------------------------------------------------------------------------
 # Setup Timezone
@@ -34,6 +34,8 @@ RUN locale-gen fr_FR.UTF-8
 ENV LANG fr_FR.UTF-8
 ENV LANGUAGE fr_FR:fr
 ENV LC_ALL fr_FR.UTF-8
+
+ENV PHP_DOWNSTREAM_PORT 9000
 
 # ------------------------------------------------------------------------------
 # Provision the server
@@ -74,6 +76,7 @@ RUN apt-get update && \
 
 RUN mkdir /provision
 ADD provision /provision
+ADD provision/start.sh /start.sh
 RUN /provision/provision.sh
 
 RUN usermod -u 1000 www-data

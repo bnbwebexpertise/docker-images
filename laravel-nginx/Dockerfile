@@ -12,7 +12,7 @@ FROM ubuntu-debootstrap:14.04
 
 MAINTAINER Jérémy Gaulin <contact@gabsource.com>
 
-CMD ["nginx"]
+CMD ["/bin/bash", "/start.sh"]
 
 # ------------------------------------------------------------------------------
 # Setup Timezone
@@ -30,6 +30,9 @@ ENV LANG fr_FR.UTF-8
 ENV LANGUAGE fr_FR:fr
 ENV LC_ALL fr_FR.UTF-8
 
+ENV NGINX_UPSTREAM_PORT 9000
+ENV NGINX_UPSTREAM_SERVER application
+
 # ------------------------------------------------------------------------------
 # Provision the server
 # ------------------------------------------------------------------------------
@@ -37,13 +40,12 @@ ENV LC_ALL fr_FR.UTF-8
 RUN apt-get update && \
     apt-get install -y nginx
 
+ADD provision/start.sh /start.sh
 ADD provision/nginx.conf /etc/nginx/
 ADD provision/laravel.conf /etc/nginx/sites-available/
 
 RUN ln -s /etc/nginx/sites-available/laravel.conf /etc/nginx/sites-enabled/laravel
 RUN rm /etc/nginx/sites-enabled/default
-
-RUN echo "upstream php-upstream { server application:9000; }" > /etc/nginx/conf.d/upstream.conf
 
 RUN usermod -u 1000 www-data
 
