@@ -1,7 +1,7 @@
 #!/bin/bash
 
 service postgresql start
-/usr/bin/renderd -f -c /etc/renderd.conf &
+service renderd start
 
 sleep 5
 
