@@ -6,8 +6,6 @@ A `.gitlab-ci.yml` example file to test the `YourVendor.YourPluginName`
  
 We must copy the pulled files to the OctoberCMS tree to make the 
  dependencies and autoload work as expected.
-  
-> Cache is not working (at least with 
 
 
 ```YAML
