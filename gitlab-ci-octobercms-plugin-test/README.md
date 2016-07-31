@@ -25,7 +25,7 @@ before_script:
   - 'VENDOR_DIR=${OCTOBER_DIR}/plugins/${VENDOR_NAME,,}'
   - 'PLUGIN_DIR=${VENDOR_DIR}/${PLUGIN_NAME,,}'
   - '[[ -d ${VENDOR_DIR} ]] || { mkdir -p ${VENDOR_DIR}; }'
-  - '[[ -d ${PLUGIN_DIR} ]] || { rm -rf ${PLUGIN_DIR}; }'
+  - '[[ ! -d ${PLUGIN_DIR} ]] || { rm -rf ${PLUGIN_DIR}; }'
   - 'cp -R ${CI_PROJECT_DIR} ${PLUGIN_DIR}'
   - 'cd ${OCTOBER_DIR}'
   - 'composer update'
