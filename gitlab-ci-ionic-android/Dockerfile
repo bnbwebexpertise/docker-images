@@ -18,5 +18,4 @@ RUN wget https://services.gradle.org/distributions/${GRADLE_VERSION}-all.zip && 
     mv ${GRADLE_VERSION}-all.zip ${GRADLE_USER_HOME}/wrapper/dists/
 
 RUN echo y | android update sdk -u -a --filter extra-android-m2repository,extra-android-support,extra-google-m2repository
-RUN npm update -g npm && \
-    npm install -g ionic
+RUN npm install -g ionic
