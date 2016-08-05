@@ -13,6 +13,7 @@ ENV GRADLE_VERSION gradle-2.2.1
 ENV GRADLE_HOME /opt/${GRADLE_VERSION}
 ENV GRADLE_USER_HOME ${GRADLE_HOME}
 ENV PATH $PATH:$GRADLE_HOME/bin
+ENV PATH ${PATH}:${ANDROID_HOME}/build-tools/${ANDROID_BUILD_TOOLS}
 
 RUN wget https://services.gradle.org/distributions/${GRADLE_VERSION}-all.zip && \
     unzip ${GRADLE_VERSION}-all.zip && \
