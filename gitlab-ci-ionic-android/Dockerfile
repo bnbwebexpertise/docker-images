@@ -11,6 +11,7 @@ RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-ke
 
 ENV GRADLE_VERSION gradle-2.2.1
 ENV GRADLE_HOME /opt/${GRADLE_VERSION}
+ENV GRADLE_USER_HOME ${GRADLE_HOME}
 ENV PATH $PATH:$GRADLE_HOME/bin
 
 RUN wget https://services.gradle.org/distributions/${GRADLE_VERSION}-all.zip && \
