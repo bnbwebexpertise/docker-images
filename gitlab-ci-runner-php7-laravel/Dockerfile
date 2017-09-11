@@ -23,7 +23,8 @@ RUN docker-php-ext-install mcrypt zip bz2 mbstring curl json pdo_mysql tokenizer
   && docker-php-ext-install gd
 
 # Run xdebug installation.
-RUN curl -L https://xdebug.org/files/xdebug-2.4.0rc4.tgz >> /usr/src/php/ext/xdebug.tgz && \
+RUN mkdir -p /usr/src/php/ext && \
+    curl -L https://xdebug.org/files/xdebug-2.4.0rc4.tgz >> /usr/src/php/ext/xdebug.tgz && \
     tar -xf /usr/src/php/ext/xdebug.tgz -C /usr/src/php/ext/ && \
     rm /usr/src/php/ext/xdebug.tgz && \
     docker-php-ext-install xdebug-2.4.0RC4 && \
