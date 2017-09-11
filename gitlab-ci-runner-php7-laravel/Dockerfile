@@ -1,7 +1,8 @@
 FROM php:7
 MAINTAINER Jeremy Gaulin <jeremy@bnb.re>
 
-RUN apt-get update && \
+RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - && \
+  apt-get update && \
   DEBIAN_FRONTEND=noninteractive apt-get install -y \
     libfreetype6-dev \
     libjpeg62-turbo-dev \
@@ -13,6 +14,7 @@ RUN apt-get update && \
     curl \
     git \
     unzip \
+    nodejs \
   && rm -r /var/lib/apt/lists/*
 
 # PHP Extensions
@@ -28,19 +30,17 @@ RUN curl -L https://xdebug.org/files/xdebug-2.4.0rc4.tgz >> /usr/src/php/ext/xde
     docker-php-ext-install pcntl && \
     php -m
 
-# Memory Limit
-RUN echo "memory_limit=-1" > $PHP_INI_DIR/conf.d/memory-limit.ini
-
-# Time Zone
-RUN echo "date.timezone=Indian/Reunion" > $PHP_INI_DIR/conf.d/date_timezone.ini
+# Memory Limit & Time Zone
+RUN echo "memory_limit=-1" > $PHP_INI_DIR/conf.d/memory-limit.ini && \
+    echo "date.timezone=Indian/Reunion" > $PHP_INI_DIR/conf.d/date_timezone.ini
 
 VOLUME /root/composer
 
 # Environmental Variables
 ENV COMPOSER_HOME /root/composer
 
-# Display PHP version
-RUN php --version
+# Install Bower, Gulp, Yarn
+RUN npm install -g bower gulp yarn
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
@@ -50,7 +50,19 @@ WORKDIR /tmp
 
 # Run composer and phpunit installation.
 RUN composer selfupdate && \
-    composer require "phpunit/phpunit:4.8.23" --prefer-source --no-interaction && \
+    composer require "phpunit/phpunit:6.0.13" --prefer-source --no-interaction && \
     ln -s /tmp/vendor/bin/phpunit /usr/local/bin/phpunit
 
-RUN composer --version
+# Display PHP version
+RUN echo 'PHP Version' && \
+    php --version
+RUN echo 'Composer Version' && \
+    composer --version
+RUN echo 'Npm Version' && \
+    npm --version
+RUN echo 'Bower Version' && \
+    bower --version
+RUN echo 'Yarn Version' && \
+    yarn --version
+RUN echo 'Gulp Version' && \
+    gulp --version
