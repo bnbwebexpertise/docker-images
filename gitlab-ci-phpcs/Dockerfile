@@ -25,4 +25,4 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 # Install PHP Code Sniffer
 RUN composer global require squizlabs/php_codesniffer
 
-ENTRYPOINT ["sh"]
+ENTRYPOINT []
