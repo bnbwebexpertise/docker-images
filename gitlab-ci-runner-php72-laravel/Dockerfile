@@ -24,12 +24,12 @@ RUN apt-get update \
     nodejs \
   && rm -r /var/lib/apt/lists/*
 
-# PHP Extensions
-RUN docker-php-ext-install zip bz2 mbstring curl json pdo_mysql tokenizer \
-  && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
-  && docker-php-ext-install gd \
-  && docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
-  && docker-php-ext-install bcmath imap \
+# Configure PHP Extensions
+RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
+  && docker-php-ext-configure calendar \
+  && docker-php-ext-configure imap --with-kerberos --with-imap-ssl
+# Install PHP Extensions  
+RUN docker-php-ext-install zip bz2 mbstring curl json pdo_mysql tokenizer gd calendar bcmath imap \
   && pecl install imagick \
   && docker-php-ext-enable imagick
 
