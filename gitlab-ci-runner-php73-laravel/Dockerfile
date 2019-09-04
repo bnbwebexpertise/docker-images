@@ -20,6 +20,7 @@ RUN apt-get update \
     unzip \
     zip \
     libzip-dev \
+    lftp \
   && curl -sL https://deb.nodesource.com/setup_10.x | bash - \
   && apt-get update \
   && DEBIAN_FRONTEND=noninteractive apt-get install -y \
@@ -33,9 +34,12 @@ RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-di
   && docker-php-ext-configure calendar \
   && docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
   && docker-php-ext-configure zip --with-libzip
+
 # Install PHP Extensions
-RUN docker-php-ext-install zip bz2 mbstring curl json pdo_mysql tokenizer gd calendar bcmath imap \
-  && pecl install imagick \
+RUN docker-php-ext-install zip bz2 mbstring curl json pdo_mysql tokenizer gd calendar bcmath imap
+
+# Install Imagick Extension
+RUN pecl install imagick \
   && docker-php-ext-enable imagick
 
 # Run xdebug installation.
