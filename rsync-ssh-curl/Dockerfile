@@ -6,4 +6,10 @@ RUN apk update \
  && apk upgrade \
  && apk add --no-cache \
             curl \
+            bash \
+            gawk \
+            sed \
+            grep \
+            bc \
+            coreutils \
  && rm -rf /var/cache/apk/*
