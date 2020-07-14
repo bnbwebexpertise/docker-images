@@ -12,4 +12,5 @@ RUN apk update \
             grep \
             bc \
             coreutils \
+            sshpass \
  && rm -rf /var/cache/apk/*
