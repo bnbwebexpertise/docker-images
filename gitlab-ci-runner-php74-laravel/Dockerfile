@@ -1,4 +1,4 @@
-FROM php:7.3
+FROM php:7.4
 MAINTAINER Jeremy Gaulin <jeremy@bnb.re>
 
 # System update
@@ -14,6 +14,7 @@ RUN apt-get update \
     libkrb5-dev \
     libmagickwand-dev \
     libmagickcore-dev \
+    libonig-dev \
     imagemagick \
     curl \
     git \
@@ -21,7 +22,7 @@ RUN apt-get update \
     zip \
     libzip-dev \
     lftp \
-  && curl -sL https://deb.nodesource.com/setup_10.x | bash - \
+  && curl -sL https://deb.nodesource.com/setup_12.x | bash - \
   && apt-get update \
   && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     nodejs \
@@ -30,10 +31,10 @@ RUN apt-get update \
 # More
 
 # Configure PHP Extensions
-RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
+RUN docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/ \
   && docker-php-ext-configure calendar \
   && docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
-  && docker-php-ext-configure zip --with-libzip
+  && docker-php-ext-configure zip --with-zip
 
 # Install PHP Extensions
 RUN docker-php-ext-install zip bz2 mbstring curl json pdo_mysql tokenizer gd calendar bcmath imap
@@ -44,10 +45,10 @@ RUN pecl install imagick igbinary redis\
 
 # Run xdebug installation.
 RUN mkdir -p /usr/src/php/ext && \
-    curl -L https://xdebug.org/files/xdebug-2.7.2.tgz >> /usr/src/php/ext/xdebug.tgz && \
+    curl -L https://xdebug.org/files/xdebug-2.9.6.tgz >> /usr/src/php/ext/xdebug.tgz && \
     tar -xf /usr/src/php/ext/xdebug.tgz -C /usr/src/php/ext/ && \
     rm /usr/src/php/ext/xdebug.tgz && \
-    docker-php-ext-install xdebug-2.7.2 && \
+    docker-php-ext-install xdebug-2.9.6 && \
     docker-php-ext-install pcntl && \
     php -m
 
@@ -71,7 +72,7 @@ WORKDIR /tmp
 
 # Run composer and phpunit installation.
 RUN composer selfupdate && \
-    composer require "phpunit/phpunit:^8.3" --prefer-source --no-interaction && \
+    composer require "phpunit/phpunit:^8.5" --prefer-source --no-interaction && \
     ln -s /tmp/vendor/bin/phpunit /usr/local/bin/phpunit
 
 # Display PHP version
