@@ -36,11 +36,11 @@ RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-di
   && docker-php-ext-configure zip --with-libzip
 
 # Install PHP Extensions
-RUN docker-php-ext-install zip bz2 mbstring curl json pdo_mysql tokenizer gd calendar bcmath imap
+RUN docker-php-ext-install zip bz2 mbstring curl json pdo_mysql tokenizer gd calendar bcmath imap exif
 
 # Install Imagick Extension
 RUN pecl install imagick igbinary redis\
-  && docker-php-ext-enable imagick igbinary redis
+  && docker-php-ext-enable imagick igbinary redis exif
 
 # Run xdebug installation.
 RUN mkdir -p /usr/src/php/ext && \
