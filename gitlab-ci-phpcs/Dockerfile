@@ -19,7 +19,8 @@ RUN docker-php-ext-install zip bz2 mbstring curl json tokenizer
 ENV COMPOSER_HOME /root/composer
 ENV PATH "${COMPOSER_HOME}/vendor/bin:${PATH}"
 
-# Install Composer > 2.0.8
+# Install Composer
+RUN echo '>= 2.0.13'
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Install PHP Code Sniffer

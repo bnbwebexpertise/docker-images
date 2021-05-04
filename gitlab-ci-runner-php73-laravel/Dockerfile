@@ -70,6 +70,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 WORKDIR /tmp
 
 # Run composer and phpunit installation.
+RUN echo '>= 2.0.13'
 RUN composer selfupdate --2 && \
     composer require "phpunit/phpunit:^8.3" --prefer-source --no-interaction && \
     ln -s /tmp/vendor/bin/phpunit /usr/local/bin/phpunit

@@ -64,13 +64,14 @@ ENV COMPOSER_HOME /root/composer
 # Install Bower, Gulp, Yarn
 RUN npm install -g bower gulp yarn
 
-# Install Composer
+# Install Composer > 2.0.8
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Goto temporary directory.
 WORKDIR /tmp
 
 # Run composer and phpunit installation.
+RUN echo '>= 2.0.13'
 RUN composer selfupdate --2 && \
     composer require "phpunit/phpunit:^8.5" --prefer-source --no-interaction && \
     ln -s /tmp/vendor/bin/phpunit /usr/local/bin/phpunit
