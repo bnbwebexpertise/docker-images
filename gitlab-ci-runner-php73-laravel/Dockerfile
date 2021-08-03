@@ -61,6 +61,7 @@ VOLUME /root/composer
 ENV COMPOSER_HOME /root/composer
 
 # Install Bower, Gulp, Yarn
+RUN npm config set unsafe-perm true
 RUN npm install -g bower gulp yarn
 
 # Install Composer
