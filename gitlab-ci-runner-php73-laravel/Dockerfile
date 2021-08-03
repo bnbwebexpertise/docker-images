@@ -21,7 +21,7 @@ RUN apt-get update \
     zip \
     libzip-dev \
     lftp \
-  && curl -sL https://deb.nodesource.com/setup_10.x | bash - \
+  && curl -sL https://deb.nodesource.com/setup_12.x | bash - \
   && apt-get update \
   && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     nodejs \
