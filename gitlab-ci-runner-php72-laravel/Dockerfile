@@ -20,8 +20,8 @@ RUN apt-get update \
     unzip \
     zip \
     libzip-dev \
-    lftp \
-  && curl -sL https://deb.nodesource.com/setup_10.x | bash - \
+    lftp
+RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - \
   && apt-get update \
   && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     nodejs \
@@ -73,6 +73,11 @@ WORKDIR /tmp
 RUN composer selfupdate --2 && \
     composer require "phpunit/phpunit:^8.0" --prefer-source --no-interaction && \
     ln -s /tmp/vendor/bin/phpunit /usr/local/bin/phpunit
+
+RUN apt-get update \
+  && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    ca-certificates \
+  && rm -r /var/lib/apt/lists/*
 
 # Display PHP version
 RUN echo 'PHP Version' && \
