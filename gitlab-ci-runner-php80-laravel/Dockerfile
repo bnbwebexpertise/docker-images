@@ -23,7 +23,7 @@ RUN apt-get update \
     zip \
     libzip-dev \
     lftp
-RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - \
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - \
   && apt-get update \
   && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     nodejs \
@@ -67,16 +67,15 @@ ENV COMPOSER_HOME /root/composer
 RUN npm config set unsafe-perm true
 RUN npm install -g bower gulp yarn
 
-# Install Composer > 2.0.8
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-
 # Goto temporary directory.
 WORKDIR /tmp
 
-# Run composer and phpunit installation.
-RUN echo '>= 1.0.0'
-RUN composer selfupdate --2 && \
-    composer require "phpunit/phpunit:^9.0" --prefer-source --no-interaction && \
+
+# Install Composer > 2.0.8
+RUN echo '>= 2.0.8'
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+RUN composer selfupdate --2
+RUN composer require "phpunit/phpunit:^9.0" --prefer-source --no-interaction && \
     ln -s /tmp/vendor/bin/phpunit /usr/local/bin/phpunit
 
 RUN php -m && echo "============================================="
