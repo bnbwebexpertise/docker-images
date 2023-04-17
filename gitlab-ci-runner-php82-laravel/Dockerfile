@@ -1,4 +1,4 @@
-FROM php:8.1-cli
+FROM php:8.2-cli
 MAINTAINER Jeremy Gaulin <jeremy@bnb.re>
 
 # System update
@@ -47,10 +47,10 @@ RUN pecl install imagick igbinary redis\
 
 # Run xdebug installation.
 RUN mkdir -p /usr/src/php/ext && \
-    curl -L https://xdebug.org/files/xdebug-3.1.1.tgz >> /usr/src/php/ext/xdebug.tgz && \
+    curl -L https://xdebug.org/files/xdebug-3.2.1.tgz >> /usr/src/php/ext/xdebug.tgz && \
     tar -xf /usr/src/php/ext/xdebug.tgz -C /usr/src/php/ext/ && \
     rm /usr/src/php/ext/xdebug.tgz && \
-    docker-php-ext-install xdebug-3.1.1 && \
+    docker-php-ext-install xdebug-3.2.1 && \
     docker-php-ext-install pcntl && \
     php -m
 
