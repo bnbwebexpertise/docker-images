@@ -23,7 +23,7 @@ RUN apt-get update \
     zip \
     libzip-dev \
     lftp
-RUN curl -sL https://deb.nodesource.com/setup_16.x | bash - \
+RUN curl -sL https://deb.nodesource.com/setup_18.x | bash - \
   && apt-get update \
   && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     nodejs \
@@ -64,7 +64,7 @@ VOLUME /root/composer
 ENV COMPOSER_HOME /root/composer
 
 # Install Bower, Gulp, Yarn
-RUN npm config set unsafe-perm true
+RUN echo 'unsafe-perm=true' >> ~/.npmrc
 RUN npm install -g bower gulp yarn
 
 # Goto temporary directory.
