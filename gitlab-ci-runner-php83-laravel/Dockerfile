@@ -37,8 +37,8 @@ RUN docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/i
   && docker-php-ext-configure zip --with-zip
 
 # Install PHP Extensions
-RUN docker-php-ext-install zip bz2 mbstring pdo_mysql gd calendar bcmath exif curl imap \
-  && docker-php-ext-enable zip bz2 mbstring pdo_mysql gd calendar bcmath exif curl imap
+RUN docker-php-ext-install zip bz2 mbstring pdo_mysql gd calendar bcmath exif curl imap intl \
+  && docker-php-ext-enable zip bz2 mbstring pdo_mysql gd calendar bcmath exif curl imap intl
 
 # Install Imagick Extension
 RUN pecl install igbinary redis \
@@ -91,7 +91,7 @@ WORKDIR /tmp
 RUN echo '>= 2.0.8'
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 RUN composer selfupdate --2
-RUN composer require "phpunit/phpunit:^10.0" --prefer-source --no-interaction && \
+RUN composer require "phpunit/phpunit:^11.0" --prefer-source --no-interaction && \
     ln -s /tmp/vendor/bin/phpunit /usr/local/bin/phpunit
 
 RUN php -m && echo "============================================="
